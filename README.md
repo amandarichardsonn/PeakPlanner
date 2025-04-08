@@ -3,7 +3,7 @@ RoadMap
 Step 1: Create basic chat interface
 Set up a frontend interface with streamlit
 
-Task 1: Build frontend using streamlit
+- [ ] Task 1: Build frontend using streamlit
 Task 2: Connect to a LLM (narrowed down to Claude 3 or GPT-4)
 -----------------------------------------------------------
 Step 2: Setup vector search with embeddings
