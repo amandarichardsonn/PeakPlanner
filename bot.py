@@ -1,46 +1,48 @@
-from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from langchain_core.messages import (
-    HumanMessage,
-    SystemMessage,
-)
+import streamlit as st
+import openai
+import os
+from dotenv import load_dotenv
+
 import os
 
-import getpass
-import os
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-if not os.getenv("HUGGINGFACEHUB_API_TOKEN"):
-    os.environ["HUGGINGFACEHUB_API_TOKEN"] = getpass.getpass("Enter your token: ")
+st.title("🧗‍♀️ Mountaineering Chatbot")
 
-# os.environ["HUGGINGFACEHUB_API_TOKEN"] = ...
+# Initialize message history
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": "You are a helpful mountaineering chatbot."}
+    ]
 
-llm = HuggingFaceEndpoint(
-    repo_id="HuggingFaceH4/zephyr-7b-beta",
-    task="text-generation",
-    max_new_tokens=512,
-    do_sample=False,
-    repetition_penalty=1.03,
-)
+# Show chat history
+for msg in st.session_state.messages[1:]:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-chat_model = ChatHuggingFace(llm=llm)
+# Chat input
+user_input = st.chat_input("Ask about climbing, gear, training, etc...")
 
-# messages = [
-#     SystemMessage(content="You're a helpful assistant"),
-#     HumanMessage(
-#         content="What happens when an unstoppable force meets an immovable object?"
-#     ),
-# ]
+if user_input:
+    # Show user message
+    st.chat_message("user").markdown(user_input)
 
-# ai_msg = chat_model.invoke(messages)
-# print(ai_msg.content)
+    # Add to message history
+    st.session_state.messages.append({"role": "user", "content": user_input})
 
-while True:
-    user_input = input("You: ")
+    # Call OpenAI API with full history
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=st.session_state.messages
+    )
 
-    if user_input.lower() == "exit":
-        print("Chatbot: Goodbye!")
-        break
+    reply = response.choices[0].message.content
 
-    # Get response from model
-    response = chat_model.invoke([HumanMessage(content=user_input)])
+    # Show assistant response
+    st.chat_message("assistant").markdown(reply)
 
-    print("Chatbot:", response.content)
+    # Add assistant reply to history
+    st.session_state.messages.append({"role": "assistant", "content": reply})
+
