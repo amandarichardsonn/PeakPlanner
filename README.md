@@ -4,17 +4,15 @@ RoadMap
 **Step 1**: Create basic chat interface
 Set up a frontend interface with streamlit
 
-- [ ] Task 1: Build frontend using streamlit
-- [ ] Task 2: Connect to a LLM (narrowed down to Claude 3 or GPT-4)
-
-Notes: openAI chosen "model": "gpt-4o-mini", loading env variables using dotenv python package
+- [x] Task 1: Build frontend using streamlit
+- [x] Task 2: Connect to a LLM (narrowed down to Claude 3 or GPT-4)
 
 -----------------------------------------------------------
 
 **Step 2**: Setup vector search with embeddings
 Pull mountaineering trip reports from forums like Mountain Project, process the text, generate embeddings, store in vector db for semantic search
 
-- [ ] Task 1: Scrape trip reports and store in json or csv file
+- [x] Task 1: Scrape trip reports and store in json or csv file
 - [ ] Task 2: Process the scraped text data into a format for vector embeddings
 - [ ] Task 3: Store the generated embeddings in a vector db for future semantic search
 
