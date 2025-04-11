@@ -39,13 +39,13 @@ def safe_get(url: str, retries=3, backoff=2) -> t.Union[Response,None]:
     return None
 
 def scrape_data(url: str) -> t.Dict[str,str]:
-    """_summary_
+    """Gather data from the html content of the WTA hike page.
 
     Args:
         url (str):  The URL to scrape.
 
     Returns:
-        Dict[str,str]: _description_
+        Dict[str,str]: parsed information
     """
     req: Response | None = safe_get(url)
     if req is None:
